@@ -44,7 +44,7 @@
     <ClCompile>
     </ClCompile>
     <Link>
-      <Version>21076.20053</Version>
+      <Version>21076.20052</Version>
       <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>rt.lib;pcibus.lib;netlib.lib;clib.lib;vshelper.lib</AdditionalDependencies>
       <OutputFile>$(SolutionDir)$(Configuration)\\cpuinfo.rta</OutputFile>

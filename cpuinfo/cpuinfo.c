@@ -933,6 +933,14 @@ void main(int argc, char **argv)
 						n, i, regs[0], regs[1], regs[2], regs[3]);
 				}
 				break;
+			case 15:	// Platform QoS/L3 Cache QoS
+				getcpuidx(n, 0, regs);
+				printf("%08x: Platform QoS: %08x  %08x  %08x  %08x\n",
+					n, regs[0], regs[1], regs[2], regs[3]);
+				getcpuidx(n, 0, regs);
+				printf("%08x: L3 Cache QoS: %08x  %08x  %08x  %08x\n",
+					n, regs[0], regs[1], regs[2], regs[3]);
+				break;
 			case 16:
 				getcpuidx(n, 0, regs);
 				printf("%08x:     %08x  %08x  %08x  %08x\n",
