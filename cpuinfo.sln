@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cpuinfo", "cpuinfo\cpuinfo.vcxproj", "{448A6DD8-F7C1-46C9-9C7D-EA3A30D047A4}"
 EndProject
@@ -9,29 +9,55 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wcpuinfo", "wcpuinfo\wcpuin
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug_61|INtime = Debug_61|INtime
+		Debug_61|Mixed Platforms = Debug_61|Mixed Platforms
+		Debug_61|Win32 = Debug_61|Win32
 		Debug|INtime = Debug|INtime
 		Debug|Mixed Platforms = Debug|Mixed Platforms
 		Debug|Win32 = Debug|Win32
+		Release_61|INtime = Release_61|INtime
+		Release_61|Mixed Platforms = Release_61|Mixed Platforms
+		Release_61|Win32 = Release_61|Win32
 		Release|INtime = Release|INtime
 		Release|Mixed Platforms = Release|Mixed Platforms
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{448A6DD8-F7C1-46C9-9C7D-EA3A30D047A4}.Debug_61|INtime.ActiveCfg = Debug_61|INtime
+		{448A6DD8-F7C1-46C9-9C7D-EA3A30D047A4}.Debug_61|INtime.Build.0 = Debug_61|INtime
+		{448A6DD8-F7C1-46C9-9C7D-EA3A30D047A4}.Debug_61|Mixed Platforms.ActiveCfg = Debug_61|INtime
+		{448A6DD8-F7C1-46C9-9C7D-EA3A30D047A4}.Debug_61|Mixed Platforms.Build.0 = Debug_61|INtime
+		{448A6DD8-F7C1-46C9-9C7D-EA3A30D047A4}.Debug_61|Win32.ActiveCfg = Debug_61|INtime
 		{448A6DD8-F7C1-46C9-9C7D-EA3A30D047A4}.Debug|INtime.ActiveCfg = Debug|INtime
 		{448A6DD8-F7C1-46C9-9C7D-EA3A30D047A4}.Debug|INtime.Build.0 = Debug|INtime
 		{448A6DD8-F7C1-46C9-9C7D-EA3A30D047A4}.Debug|Mixed Platforms.ActiveCfg = Debug|INtime
 		{448A6DD8-F7C1-46C9-9C7D-EA3A30D047A4}.Debug|Mixed Platforms.Build.0 = Debug|INtime
 		{448A6DD8-F7C1-46C9-9C7D-EA3A30D047A4}.Debug|Win32.ActiveCfg = Debug|INtime
+		{448A6DD8-F7C1-46C9-9C7D-EA3A30D047A4}.Release_61|INtime.ActiveCfg = Release_61|INtime
+		{448A6DD8-F7C1-46C9-9C7D-EA3A30D047A4}.Release_61|INtime.Build.0 = Release_61|INtime
+		{448A6DD8-F7C1-46C9-9C7D-EA3A30D047A4}.Release_61|Mixed Platforms.ActiveCfg = Release_61|INtime
+		{448A6DD8-F7C1-46C9-9C7D-EA3A30D047A4}.Release_61|Mixed Platforms.Build.0 = Release_61|INtime
+		{448A6DD8-F7C1-46C9-9C7D-EA3A30D047A4}.Release_61|Win32.ActiveCfg = Release_61|INtime
 		{448A6DD8-F7C1-46C9-9C7D-EA3A30D047A4}.Release|INtime.ActiveCfg = Release|INtime
 		{448A6DD8-F7C1-46C9-9C7D-EA3A30D047A4}.Release|INtime.Build.0 = Release|INtime
 		{448A6DD8-F7C1-46C9-9C7D-EA3A30D047A4}.Release|Mixed Platforms.ActiveCfg = Release|INtime
 		{448A6DD8-F7C1-46C9-9C7D-EA3A30D047A4}.Release|Mixed Platforms.Build.0 = Release|INtime
 		{448A6DD8-F7C1-46C9-9C7D-EA3A30D047A4}.Release|Win32.ActiveCfg = Release|INtime
+		{A35DD47B-4452-44D8-BAEF-1B43EDF487B5}.Debug_61|INtime.ActiveCfg = Debug_61|Win32
+		{A35DD47B-4452-44D8-BAEF-1B43EDF487B5}.Debug_61|Mixed Platforms.ActiveCfg = Debug_61|Win32
+		{A35DD47B-4452-44D8-BAEF-1B43EDF487B5}.Debug_61|Mixed Platforms.Build.0 = Debug_61|Win32
+		{A35DD47B-4452-44D8-BAEF-1B43EDF487B5}.Debug_61|Win32.ActiveCfg = Debug_61|Win32
+		{A35DD47B-4452-44D8-BAEF-1B43EDF487B5}.Debug_61|Win32.Build.0 = Debug_61|Win32
 		{A35DD47B-4452-44D8-BAEF-1B43EDF487B5}.Debug|INtime.ActiveCfg = Debug|Win32
 		{A35DD47B-4452-44D8-BAEF-1B43EDF487B5}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
 		{A35DD47B-4452-44D8-BAEF-1B43EDF487B5}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{A35DD47B-4452-44D8-BAEF-1B43EDF487B5}.Debug|Win32.ActiveCfg = Debug|Win32
 		{A35DD47B-4452-44D8-BAEF-1B43EDF487B5}.Debug|Win32.Build.0 = Debug|Win32
+		{A35DD47B-4452-44D8-BAEF-1B43EDF487B5}.Release_61|INtime.ActiveCfg = Release_61|Win32
+		{A35DD47B-4452-44D8-BAEF-1B43EDF487B5}.Release_61|Mixed Platforms.ActiveCfg = Release_61|Win32
+		{A35DD47B-4452-44D8-BAEF-1B43EDF487B5}.Release_61|Mixed Platforms.Build.0 = Release_61|Win32
+		{A35DD47B-4452-44D8-BAEF-1B43EDF487B5}.Release_61|Win32.ActiveCfg = Release_61|Win32
+		{A35DD47B-4452-44D8-BAEF-1B43EDF487B5}.Release_61|Win32.Build.0 = Release_61|Win32
 		{A35DD47B-4452-44D8-BAEF-1B43EDF487B5}.Release|INtime.ActiveCfg = Release|Win32
 		{A35DD47B-4452-44D8-BAEF-1B43EDF487B5}.Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{A35DD47B-4452-44D8-BAEF-1B43EDF487B5}.Release|Mixed Platforms.Build.0 = Release|Win32

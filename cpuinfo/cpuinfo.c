@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include <rt.h>
@@ -50,7 +51,15 @@
 	((((id)& CPUID_FAMILY) == 0xf00) ? \
 	(((id)& CPUID_EXT_FAMILY) >> 20) : 0))
 
-#define	MSR_IA32_MISC_ENABLE	0x1a0
+/*
+ * Various MSRs
+ */
+#define IA32_MPERF				0xe7
+#define IA32_APERF				0xe8
+#define	IA32_MISC_ENABLE		0x1a0
+#define IA32_ENERGY_PERF_BIAS	0x1b0
+#define IA32_PM_ENABLE			0x770
+#define IA32_PKG_HCD_CTL		0xdb0
 
 uint32_t cpu_id;
 uint32_t cpu_high = 0;
@@ -60,7 +69,8 @@ uint32_t cpu_feature = 0;
 uint32_t cpu_feature2 = 0;
 uint32_t cpu_procinfo2 = 0;
 static uint32_t _cpunamebuf[4];
-char *cpu_vendor;
+static char *cpu_vendor;
+static char brand[49];
 
 uint32_t amd_feature;
 uint32_t amd_feature2;
@@ -205,6 +215,10 @@ unsigned char get_apic_id(void)
 	return (regs[1] & 0xff000000) >> 24;
 }
 
+#pragma warning(push)
+#pragma warning(disable : 4474)
+#pragma warning(disable : 4476)
+
 void features(void)
 {
 	printf("\nFeatures=0x%B\n", cpu_feature,
@@ -281,6 +295,8 @@ void features(void)
 			);
 	}
 }
+
+#pragma warning(pop)
 
 static void
 print_INTEL_TLB(u_int data)
@@ -614,12 +630,59 @@ print_INTEL_TLB(u_int data)
 
 static void print_INTEL_info(void)
 {
-	u_int regs[4];
+	u_int regs[4], regs2[4], cpuid6[4];
 	u_int rounds, regnum, set;
 	u_int nwaycode, nway;
 
+	printf("\nEIST: Enhanced Intel SpeedStep Technology: ");
+	getcpuid(01, regs);
+	if ((regs[2] & 0x00000080) != 0) {
+		printf("present: %sabled\n", (rdmsr(IA32_MISC_ENABLE) & (1 << 16)) != 0 ? "en" : "dis");
+	}
+	else {
+		printf("NOT present\n");
+	}
+
+	printf("\nIDA: Intel Dynamic Acceleration: ");
+	if (cpu_high >= 6) {
+		getcpuid(6, cpuid6);
+		if ((cpuid6[0] & 2) != 0) {
+			printf("present: %sabled\n", (rdmsr(IA32_MISC_ENABLE) & ((QWORD)1 << 38)) != 0 ? "en" : "dis");
+		}
+		else {
+			printf("NOT present\n");
+		}
+	}
+	else {
+		printf("NOT detected\n");
+	}
+
+	printf("\nIntel Turbo Boost Technology: ");
+	if (cpu_high >= 6 && (cpuid6[2] & 8) != 0) {
+		printf("present: ENERGY_PERF_BIAS = %u\n", (DWORD)(rdmsr(IA32_ENERGY_PERF_BIAS) & 0xf));
+	}
+	else {
+		printf("NOT present\n");
+	}
+
+	printf("\nHWP: Hardware-controlled Performance States: ");
+	if (cpu_high >= 6 && (cpuid6[0] & (1 << 7)) != 0) {
+		printf("present: %sabled\n", (rdmsr(IA32_PM_ENABLE) != 0) ? "en" : "dis");
+	}
+	else {
+		printf("NOT present\n");
+	}
+
+	printf("\nHDC: Hardware Duty-Cycling: ");
+	if (cpu_high >= 6 && (cpuid6[0] & (1 << 13)) != 0) {
+		printf("present: %sabled\n", (rdmsr(IA32_PKG_HCD_CTL) & 1) ? "en" : "dis");
+	}
+	else {
+		printf("NOT present\n");
+	}
+
 	if (cpu_high >= 2) {
-		printf("Cache and TLB info:");
+		printf("\nCache and TLB info:");
 		rounds = 0;
 		do {
 			getcpuid(0x2, regs);
@@ -658,8 +721,43 @@ static void print_INTEL_info(void)
 			nway = 1 << (nwaycode / 2);
 		else
 			nway = 0;
-		printf("\nL2 cache: %u kbytes, %u-way associative, %u bytes/line",
+		printf("\nL2 cache: %u kbytes, %u-way associative, %u bytes/line\n",
 			(regs[2] >> 16) & 0xffff, nway, regs[2] & 0xff);
+	}
+
+	if (cpu_high >= 7) {
+		getcpuidx(7, 0, regs);
+		if (regs[1] & (1 << 12)) {
+			printf("\nSupports Resource Director Technology - Monitor\n");
+		}
+		else {
+			printf("\n NO Resource Director Technology - Monitor\n");
+		}
+		if (regs[1] & (1 << 15)) {
+			printf("\nSupports Resource Director Technology - Allocation\n");
+			if (cpu_high >= 0x10) {
+				getcpuidx(0x10, 0, regs);
+				if ((regs[1] & 0x04) != 0) {
+					printf("  Supports L2 CAT\n");
+					getcpuidx(0x10, 2, regs2);
+					printf("  L2CAT: Length of capability bitmask = %u\n", regs2[0] & 0x1f);
+					printf("  L2CAT: Highest COS number = %u\n", regs2[3] & 0xffff);
+					printf("  L2CAT: Allocation unit map: %08x\n", regs2[1]);
+				}
+				if ((regs[1] & 0x02) != 0) {
+					printf("  Supports L3 CAT\n");
+					getcpuidx(0x10, 1, regs2);
+					printf("  L3CAT: Length of capability bitmask = %u\n", regs2[0] & 0x1f);
+					printf("  L3CAT: Highest COS number = %u\n", regs2[3] & 0xffff);
+					printf("  L3CAT: Allocation unit map: %08x\n", regs2[1]);
+					printf("  L3CAT: ECX=%#x\n", regs2[2]);
+				}
+
+			}
+		}
+		else {
+			printf("\n NO Resource Director Technology - Allocation\n");
+		}
 	}
 
 	printf("\n");
@@ -698,6 +796,84 @@ find_cpu_vendor_id(void)
 	return (0);
 }
 
+/**
+ * Get the Max CPU frequency from the brand string
+ */
+
+QWORD GetCpuMaxFrequency(void)
+{
+	char *qq = "Intel(R) Core(TM) i5-6500T CPU @ 2.50GHz";
+	char *p;
+	double multiplier;
+	QWORD maxFreq = 0;
+	const char *subStr;
+
+	p = strdup(brand);
+	if (!p) {
+		printf("strdup failed\n");
+		return 0;  // Arbitrary
+	}
+
+	strrev(p);
+
+	if ((subStr = strstr(p, "zHM")) != NULL)
+		multiplier = 1e6;
+	else if ((subStr = strstr(p, "zHG")) != NULL)
+		multiplier = 1e9;
+	else if ((subStr = strstr(p, "zHT")) != NULL)
+		multiplier = 1e12;
+	else {
+		printf("Could not determine maximum qualified frequency!\n");
+		multiplier = 0.0;
+	}
+
+#ifdef COMMENT1
+	DPRINTF("brand string - %s", brandString);
+#endif
+
+	if (multiplier > 1.0) {
+		char digits[16], *digit = digits;
+
+		subStr = p + (subStr - p + 3);
+
+		while (*subStr != ' ')
+			*(digit++) = *(subStr++);
+
+		*digit = '\0';
+		strrev(digits);
+		maxFreq = (QWORD)(strtod(digits, NULL) * multiplier);
+	}
+
+	free(p);
+
+	return maxFreq;
+}
+
+double HwGetCPUFrequency(void)
+{
+	QWORD aperf, mperf;
+	static QWORD HwCPUMaxFrequency = 0;
+	double ret;
+
+	if (HwCPUMaxFrequency == 0) {
+		HwCPUMaxFrequency = GetCpuMaxFrequency();
+	}
+
+	disable();
+	mperf = rdmsr(IA32_MPERF);
+	aperf = rdmsr(IA32_APERF);
+	enable();
+
+	printf("aperf=%llu, mperf=%llu\n", aperf, mperf);
+	ret = ((double)aperf / (double)mperf) * ((double)HwCPUMaxFrequency / 1e9);
+
+	disable();
+	wrmsr(IA32_MPERF, 0);
+	wrmsr(IA32_APERF, 0);
+	enable();
+
+	return ret;
+}
 
 void main(int argc, char **argv)
 {
@@ -737,9 +913,9 @@ void main(int argc, char **argv)
 		((CPUID_TO_FAMILY(cpu_id) == 0xf && CPUID_TO_MODEL(cpu_id) >= 0x3) ||
 		(CPUID_TO_FAMILY(cpu_id) == 0x6 && CPUID_TO_MODEL(cpu_id) >= 0xe))) {
 		uint64_t msr;
-		msr = rdmsr(MSR_IA32_MISC_ENABLE);
+		msr = rdmsr(IA32_MISC_ENABLE);
 		if ((msr & 0x400000ULL) != 0) {
-			wrmsr(MSR_IA32_MISC_ENABLE, msr & ~0x400000ULL);
+			wrmsr(IA32_MISC_ENABLE, msr & ~0x400000ULL);
 			getcpuid(0, regs);
 			cpu_high = regs[0];
 		}
@@ -871,7 +1047,7 @@ void main(int argc, char **argv)
 		((regs[1] >> 8) & 255) * 8);
 	if (getcpuid(0x80000000, regs)) {
 		unsigned max = regs[0], n;
-		char brand[49], *p;
+		char *p;
 		if (max & 0x80000000) {
 			if (max > 0x80000004)
 				max = 0x80000004;
@@ -887,14 +1063,17 @@ void main(int argc, char **argv)
 		}
 	}
 
-	features();
+	printf("Max clock frequency: %lluHz\n", GetCpuMaxFrequency());
+	printf("Current frequency: %gGHz\n", HwGetCPUFrequency());
 
-	if (header_only)
-		return;
+	features();
 
 	if (cpu_vendor_id == CPU_VENDOR_INTEL) {
 		print_INTEL_info();
 	}
+
+	if (header_only)
+		return;
 
 	printf("\nDump of CPUID registers:\n"
 		"    code  idx   EAX       EBX       ECX       EDX  \n");
@@ -935,10 +1114,10 @@ void main(int argc, char **argv)
 				break;
 			case 15:	// Platform QoS/L3 Cache QoS
 				getcpuidx(n, 0, regs);
-				printf("%08x: Platform QoS: %08x  %08x  %08x  %08x\n",
+				printf("%08x: %08x  %08x  %08x  %08x\n",
 					n, regs[0], regs[1], regs[2], regs[3]);
 				getcpuidx(n, 0, regs);
-				printf("%08x: L3 Cache QoS: %08x  %08x  %08x  %08x\n",
+				printf("%08x: %08x  %08x  %08x  %08x\n",
 					n, regs[0], regs[1], regs[2], regs[3]);
 				break;
 			case 16:

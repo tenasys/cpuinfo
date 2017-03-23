@@ -1,8 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug_61|INtime">
+      <Configuration>Debug_61</Configuration>
+      <Platform>INtime</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|INtime">
       <Configuration>Debug</Configuration>
+      <Platform>INtime</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release_61|INtime">
+      <Configuration>Release_61</Configuration>
       <Platform>INtime</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|INtime">
@@ -23,13 +31,24 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|INtime'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>NotSet</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_61|INtime'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>NotSet</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|INtime'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <WholeProgramOptimization>false</WholeProgramOptimization>
     <CharacterSet>NotSet</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_61|INtime'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <CharacterSet>NotSet</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -37,7 +56,13 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|INtime'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_61|INtime'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|INtime'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_61|INtime'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|INtime'">
@@ -48,9 +73,25 @@
       <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>rt.lib;pcibus.lib;netlib.lib;clib.lib;vshelper.lib</AdditionalDependencies>
       <OutputFile>$(SolutionDir)$(Configuration)\\cpuinfo.rta</OutputFile>
+      <AdditionalLibraryDirectories>c:\INtime61\rt\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ClCompile>
       <ExceptionHandling>Async</ExceptionHandling>
+      <AdditionalIncludeDirectories>c:\intime61\rt\include\network7;c:\intime61\rt\include</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_61|INtime'">
+    <ClCompile />
+    <Link>
+      <Version>21076.20052</Version>
+      <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>rt.lib;pcibus.lib;netlib.lib;clib.lib;vshelper.lib</AdditionalDependencies>
+      <OutputFile>$(SolutionDir)$(Configuration)\\cpuinfo.rta</OutputFile>
+      <AdditionalLibraryDirectories>c:\INtime61\rt\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <ClCompile>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <AdditionalIncludeDirectories>c:\intime61\rt\include\network7;c:\intime61\rt\include</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|INtime'">
@@ -61,9 +102,25 @@
       <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>rt.lib;pcibus.lib;netlib.lib;clib.lib;vshelper.lib</AdditionalDependencies>
       <OutputFile>$(SolutionDir)$(Configuration)\\cpuinfo.rta</OutputFile>
+      <AdditionalLibraryDirectories>c:\INtime61\rt\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ClCompile>
       <ExceptionHandling>Async</ExceptionHandling>
+      <AdditionalIncludeDirectories>c:\intime61\rt\include\network7;c:\intime61\rt\include</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_61|INtime'">
+    <ClCompile />
+    <Link>
+      <Version>21076.20053</Version>
+      <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>rt.lib;pcibus.lib;netlib.lib;clib.lib;vshelper.lib</AdditionalDependencies>
+      <OutputFile>$(SolutionDir)$(Configuration)\\cpuinfo.rta</OutputFile>
+      <AdditionalLibraryDirectories>c:\INtime.61\rt\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <ClCompile>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <AdditionalIncludeDirectories>c:\intime.61\rt\include\network7;c:\intime.61\rt\include</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

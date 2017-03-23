@@ -206,6 +206,10 @@ unsigned char get_apic_id(void)
 	return (regs[1] & 0xff000000) >> 24;
 }
 
+#pragma warning(push)
+#pragma warning(disable : 4474)
+#pragma warning(disable : 4476)
+
 void features(void)
 {
 	printf("\nFeatures=0x%B\n", cpu_feature,
@@ -282,6 +286,8 @@ void features(void)
 			);
 	}
 }
+
+#pragma warning(pop)
 
 static void
 print_INTEL_TLB(u_int data)

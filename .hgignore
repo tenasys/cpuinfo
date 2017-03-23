@@ -4,3 +4,6 @@ Release
 *.suo
 *.sdf
 ipch
+*.db
+Debug_61
+Release_61
