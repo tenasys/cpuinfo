@@ -752,7 +752,13 @@ static void print_INTEL_info(void)
 					printf("  L3CAT: Allocation unit map: %08x\n", regs2[1]);
 					printf("  L3CAT: ECX=%#x\n", regs2[2]);
 				}
-
+				if ((regs[1] & 0x04) != 0) {
+					printf("  Supports Memory Bandwidth Allocation\n");
+					getcpuidx(0x10, 3, regs2);
+					printf("  MBA: Max throttling value supported = %u\n", regs2[0] & 0xfff);
+					printf("  MBA: Response of delay values is %slinear\n", (regs2[2] & 0x04) ? "" : "NOT ");
+					printf("  MBA: Highest COS number = %u\n", regs2[3] & 0xffff);
+				}
 			}
 		}
 		else {
@@ -1114,10 +1120,10 @@ void main(int argc, char **argv)
 				break;
 			case 15:	// Platform QoS/L3 Cache QoS
 				getcpuidx(n, 0, regs);
-				printf("%08x: %08x  %08x  %08x  %08x\n",
+				printf("%08x:     %08x  %08x  %08x  %08x\n",
 					n, regs[0], regs[1], regs[2], regs[3]);
-				getcpuidx(n, 0, regs);
-				printf("%08x: %08x  %08x  %08x  %08x\n",
+				getcpuidx(n, 1, regs);
+				printf("%08x:     %08x  %08x  %08x  %08x\n",
 					n, regs[0], regs[1], regs[2], regs[3]);
 				break;
 			case 16:
@@ -1125,10 +1131,22 @@ void main(int argc, char **argv)
 				printf("%08x:     %08x  %08x  %08x  %08x\n",
 					n, regs[0], regs[1], regs[2], regs[3]);
 				if ((regs[1] & 2) != 0) {
-					// cache QOS detected
+					// L3 cache QOS detected
 					getcpuidx(n, 1, regs);
 					printf("%08x: %2u  %08x  %08x  %08x  %08x\n",
-						n, i, regs[0], regs[1], regs[2], regs[3]);
+						n, 1, regs[0], regs[1], regs[2], regs[3]);
+				}
+				if ((regs[1] & 4) != 0) {
+					// L2 cache QOS detected
+					getcpuidx(n, 2, regs);
+					printf("%08x: %2u  %08x  %08x  %08x  %08x\n",
+						n, 2, regs[0], regs[1], regs[2], regs[3]);
+				}
+				if ((regs[1] & 8) != 0) {
+					// MBA detected
+					getcpuidx(n, 3, regs);
+					printf("%08x: %2u  %08x  %08x  %08x  %08x\n",
+						n, 3, regs[0], regs[1], regs[2], regs[3]);
 				}
 				break;
 			default:

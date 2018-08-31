@@ -87,7 +87,7 @@
       <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>rt.lib;pcibus.lib;netlib.lib;clib.lib;vshelper.lib</AdditionalDependencies>
       <OutputFile>$(SolutionDir)$(Configuration)\\cpuinfo.rta</OutputFile>
-      <AdditionalLibraryDirectories>c:\INtime61\rt\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>c:\intime61\rt\lib</AdditionalLibraryDirectories>
     </Link>
     <ClCompile>
       <ExceptionHandling>Async</ExceptionHandling>
@@ -116,11 +116,11 @@
       <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>rt.lib;pcibus.lib;netlib.lib;clib.lib;vshelper.lib</AdditionalDependencies>
       <OutputFile>$(SolutionDir)$(Configuration)\\cpuinfo.rta</OutputFile>
-      <AdditionalLibraryDirectories>c:\INtime.61\rt\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>c:\intime61\rt\lib</AdditionalLibraryDirectories>
     </Link>
     <ClCompile>
       <ExceptionHandling>Async</ExceptionHandling>
-      <AdditionalIncludeDirectories>c:\intime.61\rt\include\network7;c:\intime.61\rt\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>c:\intime61\rt\include\network7;c:\intime61\rt\include</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
